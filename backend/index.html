@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Endpoint Tester</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>API Endpoint Tester</h1>
+
+    <div class="request-row">
+        <select id="method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+        </select>
+
+        <input id="endpoint" value="/get_some_data" placeholder="/get_some_data">
+
+        <button id="sendButton">Send</button>
+    </div>
+
+    <div class="request-row">
+        <input
+            id="params"
+            placeholder="Параметры: name=Artem&age=20"
+            aria-label="Параметры запроса"
+        >
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <textarea id="response" readonly placeholder="Ответ API появится здесь..."></textarea>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
