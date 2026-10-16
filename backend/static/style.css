@@ -1,0 +1,47 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.request-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+select,
+input,
+button,
+textarea {
+    font: inherit;
+}
+
+select,
+input,
+button {
+    padding: 10px;
+}
+
+input {
+    flex: 1;
+}
+
+button {
+    cursor: pointer;
+}
+
+textarea {
+    width: 100%;
+    min-height: 260px;
+    box-sizing: border-box;
+    padding: 12px;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.status {
+    margin: 10px 0;
+    min-height: 20px;
+}
