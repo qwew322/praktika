@@ -52,15 +52,16 @@ class RequestHandler(BaseHTTPRequestHandler):
         parsed_url = urlparse(self.path)
         path = parsed_url.path
         query_params = parse_qs(parsed_url.query)
+        
+        if path.startswith("/static/"):
+            self._serve_static(path)
+            return
 
-        if path == "/":
+        if path == "/test_api":
             html = (BASE_DIR / "index.html").read_bytes()
             self._send_response(200, html, "text/html; charset=utf-8")
             return
 
-        if path.startswith("/static/"):
-            self._serve_static(path)
-            return
 
         if path == "/get_some_data":
             self._send_json(200, {
@@ -97,7 +98,6 @@ class RequestHandler(BaseHTTPRequestHandler):
 
     def log_message(self, format: str, *args) -> None:
         print(f"[{self.log_date_time_string()}] {self.client_address[0]} - {format % args}")
-
 
 if __name__ == "__main__":
     server = HTTPServer((HOST, PORT), RequestHandler)
