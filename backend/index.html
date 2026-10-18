@@ -13,24 +13,18 @@
         <select id="method">
             <option value="GET">GET</option>
             <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
         </select>
 
-        <input id="endpoint" value="/get_some_data" placeholder="/get_some_data">
-
+        <input id="endpoint" value="/get_category" placeholder="/get_category">
         <button id="sendButton">Send</button>
     </div>
 
-    <!-- <div class="request-row">
-        <input
-            id="params"
-            placeholder="Параметры: name=Artem&age=20"
-            aria-label="Параметры запроса"
-        >
-    </div> -->
-    <textarea id="request_body"></textarea>
+    <label for="request_body">Параметры GET/DELETE или JSON body POST/PUT:</label>
+    <textarea id="request_body" placeholder='{"id": 1}'></textarea>
 
     <div id="status" class="status"></div>
-
     <textarea id="response" readonly placeholder="Ответ API появится здесь..."></textarea>
 
     <script src="/static/app.js"></script>
