@@ -1,56 +1,68 @@
 const methodField = document.getElementById("method");
 const endpointField = document.getElementById("endpoint");
-// const paramsField = document.getElementById("params");
 const reqBodyField = document.getElementById("request_body");
 const responseField = document.getElementById("response");
 const statusField = document.getElementById("status");
 const sendButton = document.getElementById("sendButton");
 
+function buildQuery(endpoint, text) {
+    if (!text) {
+        return endpoint;
+    }
+
+    const paramsObject = JSON.parse(text);
+    const params = new URLSearchParams();
+
+    Object.entries(paramsObject).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+            params.append(key, value);
+        }
+    });
+
+    const query = params.toString();
+    if (!query) {
+        return endpoint;
+    }
+
+    return endpoint + (endpoint.includes("?") ? "&" : "?") + query;
+}
+
 async function sendRequest() {
     const method = methodField.value;
     let endpoint = endpointField.value.trim();
-    // const params = paramsField.value.trim().replace(/^\?/, "");
+    const bodyText = reqBodyField.value.trim();
+
     if (!endpoint.startsWith("/")) {
-        responseField.value = "Endpoint должен начинаться с /. Например: /get_some_data";
+        responseField.value =
+            "Endpoint должен начинаться с /. Например: /get_article";
         return;
     }
-    
-    statusField.textContent = "Sending request...";
-    responseField.value = "";
-    
-    // const separator = endpoint.includes("?") ? "&" : "?";
-    // let requestUrl = params ? `${endpoint}${separator}${params}` : endpoint;
-    
-    const options = { method: method };
-    
-    console.log('method: ', method)
-    if (method !== "GET") {
-        options.headers = {
-            "Content-Type": "application/json;charset=utf-8",
-        };
-        options.body = reqBodyField.value.trim();
-    } else {
-        console.log(reqBodyField.value.trim())
-        try {
-            const propObj = JSON.parse(reqBodyField.value.trim());
-            console.log('propObj: ', propObj);
-            const propEntries = Object.entries(propObj)
-            console.log('propEntries: ', propEntries);
-            const mapObj = propEntries.map(([key, value]) => {
-                return `${key}=${value}`;
-        })
-        console.log("strArr:", mapObj.join('&'));
-        endpoint = endpoint +'?' + mapObj.join('&');
+
+    const options = { method };
+
+    try {
+        if (method === "GET" || method === "DELETE") {
+            endpoint = buildQuery(endpoint, bodyText);
+        } else {
+            if (bodyText) {
+                JSON.parse(bodyText);
+            }
+            options.headers = {
+                "Content-Type": "application/json; charset=utf-8"
+            };
+            options.body = bodyText || "{}";
         }
-        catch (e){
-            console.log(e)
-        }
+    } catch (error) {
+        statusField.textContent = "Некорректный JSON";
+        responseField.value = String(error);
+        return;
     }
 
+    statusField.textContent = "Sending request...";
+    responseField.value = "";
     const startedAt = performance.now();
 
     try {
-        console.log(endpoint, options);
         const response = await fetch(endpoint, options);
         const elapsed = Math.round(performance.now() - startedAt);
         const text = await response.text();
