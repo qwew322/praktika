@@ -9,6 +9,37 @@
 <body>
     <h1>API Endpoint Tester</h1>
 
+    <section class="api-help">
+        <h2>Доступные API endpoints</h2>
+        <p>Для GET и DELETE укажи параметры в поле ниже как JSON. Для POST и PUT это поле отправляется как JSON body.</p>
+        <pre>GET    /get_category
+        без параметров — все категории
+        {"id": 1} — категория по id
+
+POST   /post_category
+        {"name": "BMW"}
+
+PUT    /put_category
+        {"id": 1, "name": "Audi"}
+
+DELETE /delete_category
+        {"id": 1}
+
+GET    /get_article
+        без параметров — все статьи
+        {"id": 1} — статья по id
+        {"category_id": 1} — статьи категории
+
+POST   /post_article
+        {"title": "BMW M5", "content": "Описание", "category_id": 1}
+
+PUT    /put_article
+        {"id": 1, "title": "BMW M5", "content": "Новое описание", "category_id": 1}
+
+DELETE /delete_article
+        {"id": 1}</pre>
+    </section>
+
     <div class="request-row">
         <select id="method">
             <option value="GET">GET</option>
