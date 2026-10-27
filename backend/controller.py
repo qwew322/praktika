@@ -2,7 +2,7 @@ import sqlite3
 import repository
 
 
-def _positive_int(value, field_name):
+def _positive_int(value, field_name) -> int:
     try:
         value = int(value)
     except (TypeError, ValueError):
@@ -39,24 +39,31 @@ def post_category(data: dict):
     return 201, category
 
 
-def put_category(data):
-    if "id" not in data:
+def put_category(data: dict):
+    id = data.get("id")
+    if id is None:
         return 400, {"error": "Field 'id' is required"}
-
     category_id = _positive_int(data["id"], "id")
     name = str(data.get("name", "")).strip()
-    if not name:
-        return 400, {"error": "Field 'name' is required"}
+    # if not name:
+    #     return 400, {"error": "Field 'name' is required"}
+    parent_id = data.get("parent_id")
+    if parent_id is None and not name:
+        return 400, {"not data for update"}
+    a=repository.get_categories(category_id)
+    print("karent data", a)
 
+    name = name if name else a.get("name")
+    parent_id = parent_id if parent_id else a.get("parent_id")
     try:
-        category = repository.update_category(category_id, name)
+        print("params", category_id, name, parent_id)
+        category = repository.update_category(category_id, name, parent_id)
     except sqlite3.IntegrityError:
         return 409, {"error": "Category with this name already exists"}
 
     if category is None:
         return 404, {"error": "Category not found"}
     return 200, category
-
 
 def delete_category(params):
     category_id = params.get("id", [None])[0]

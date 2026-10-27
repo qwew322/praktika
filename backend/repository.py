@@ -46,11 +46,11 @@ def create_category(name: str, parent_id : int = None):
 
 
 
-def update_category(category_id, name):
+def update_category(category_id, name, parent_id):
     with get_connection() as connection:
         cursor = connection.execute(
-            "UPDATE categories SET name = ? WHERE id = ?",
-            (name, category_id)
+            "UPDATE categories SET name = ?, parent_id = ? WHERE id = ?",
+            (name, parent_id, category_id)
         )
         if cursor.rowcount == 0:
             return None
