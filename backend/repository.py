@@ -9,24 +9,41 @@ def get_categories(category_id=None):
     with get_connection() as connection:
         if category_id is None:
             rows = connection.execute(
-                "SELECT id, name FROM categories ORDER BY id"
+                "SELECT id, name, parent_id FROM categories ORDER BY id"
             ).fetchall()
             return [dict(row) for row in rows]
 
         row = connection.execute(
-            "SELECT id, name FROM categories WHERE id = ?",
+            "SELECT id, name, parent_id FROM categories WHERE id = ?",
             (category_id,)
         ).fetchone()
         return _row_to_dict(row)
 
 
-def create_category(name):
-    with get_connection() as connection:
-        cursor = connection.execute(
-            "INSERT INTO categories (name) VALUES (?)",
-            (name,)
-        )
-        return get_categories(cursor.lastrowid)
+def create_category(name: str, parent_id : int = None):
+    if parent_id is None:
+        with get_connection() as connection:
+            cursor = connection.execute(
+                "INSERT INTO categories (name) VALUES (?)",
+                (name,)
+            )
+            return get_categories(cursor.lastrowid)
+
+    else:
+        print("fsdfdsf", parent_id)
+        parent = get_categories(parent_id)
+        print("sfsdfsdf", parent)
+        if parent is None: 
+            raise ValueError(f"{parent_id} is not include in database")
+        else:
+            with get_connection() as connection:
+                        cursor = connection.execute(
+                            "INSERT INTO categories (name, parent_id) VALUES (?, ?)",
+                            (name, parent_id,)
+                        )
+                        return get_categories(cursor.lastrowid)
+
+
 
 
 def update_category(category_id, name):

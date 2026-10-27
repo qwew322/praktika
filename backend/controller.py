@@ -25,13 +25,14 @@ def get_categories(params):
     return 200, category
 
 
-def post_category(data):
+def post_category(data: dict):
     name = str(data.get("name", "")).strip()
+
     if not name:
         return 400, {"error": "Field 'name' is required"}
-
+    parent_id = data.get("parent_id")
     try:
-        category = repository.create_category(name)
+        category = repository.create_category(name, parent_id)
     except sqlite3.IntegrityError:
         return 409, {"error": "Category with this name already exists"}
 

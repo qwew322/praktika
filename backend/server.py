@@ -72,25 +72,25 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif path == "/test_api":
             html = (BASE_DIR / "index.html").read_bytes()
             self._send_response(200, html, "text/html; charset=utf-8")
-        elif path == "/get_category":
+        elif path == "/category":
             self._run_controller(controller.get_categories, params)
-        elif path == "/get_article":
+        elif path == "/article":
             self._run_controller(controller.get_articles, params)
-        elif path == "/get_some_data":
+        elif path == "/some_data":
             self._send_json(200, {"message": "Hello world!", "params": params})
         else:
             self._send_json(404, {"error": "Not found"})
 
     def do_POST(self):
         self._handle_body_request({
-            "/post_category": controller.post_category,
-            "/post_article": controller.post_article,
+            "/category": controller.post_category,
+            "/article": controller.post_article,
         })
 
     def do_PUT(self):
         self._handle_body_request({
-            "/put_category": controller.put_category,
-            "/put_article": controller.put_article,
+            "/category": controller.put_category,
+            "/article": controller.put_article,
         })
 
     def _handle_body_request(self, routes):
