@@ -12,31 +12,31 @@
     <section class="api-help">
         <h2>Доступные API endpoints</h2>
         <p>Для GET и DELETE укажи параметры в поле ниже как JSON. Для POST и PUT это поле отправляется как JSON body.</p>
-        <pre>GET    /get_category
+        <pre>GET    /category
         без параметров — все категории
         {"id": 1} — категория по id
 
-POST   /post_category
+POST   /category
         {"name": "BMW"}
 
-PUT    /put_category
+PUT    /category
         {"id": 1, "name": "Audi"}
 
-DELETE /delete_category
+DELETE /category
         {"id": 1}
 
-GET    /get_article
+GET    /article
         без параметров — все статьи
         {"id": 1} — статья по id
         {"category_id": 1} — статьи категории
 
-POST   /post_article
+POST   /article
         {"title": "BMW M5", "content": "Описание", "category_id": 1}
 
-PUT    /put_article
+PUT    /article
         {"id": 1, "title": "BMW M5", "content": "Новое описание", "category_id": 1}
 
-DELETE /delete_article
+DELETE /article
         {"id": 1}</pre>
     </section>
 
@@ -48,7 +48,7 @@ DELETE /delete_article
             <option value="DELETE">DELETE</option>
         </select>
 
-        <input id="endpoint" value="/get_category" placeholder="/get_category">
+        <input id="endpoint" value="/category" placeholder="/category">
         <button id="sendButton">Send</button>
     </div>
 
