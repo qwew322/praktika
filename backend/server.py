@@ -69,8 +69,11 @@ class RequestHandler(BaseHTTPRequestHandler):
 
         if path.startswith("/static/"):
             self._serve_static(path)
+        elif path == "/":
+                    html = (BASE_DIR / "static" / "index.html").read_bytes()
+                    self._send_response(200, html, "text/html; charset=utf-8")
         elif path == "/test_api":
-            html = (BASE_DIR / "index.html").read_bytes()
+            html = (BASE_DIR / "test_api.html").read_bytes()
             self._send_response(200, html, "text/html; charset=utf-8")
         elif path == "/category":
             self._run_controller(controller.get_categories, params)
